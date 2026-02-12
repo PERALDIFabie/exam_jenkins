@@ -5,10 +5,11 @@
 replicaCount: 3
 
 image:
-  repository: sajjadhz/fastapiapp
+  repository: peraldi/datascientestapi # replace this yourdocker_hub_id/datascientestapi
+  # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: ""
 
 imagePullSecrets: 
   - name: "regcred"
@@ -38,10 +39,10 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
+  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   type: NodePort
+  # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
   port: 80
-  nodePort: 30007  
-  targetPort: 8000
 
 ingress:
   enabled: false
