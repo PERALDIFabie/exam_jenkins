@@ -10,12 +10,6 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
         stage('Build Images (Docker Compose)') {
             steps {
                 sh 'docker-compose -f $DOCKER_COMPOSE_FILE build'
@@ -39,8 +33,8 @@ pipeline {
                 sh '''
                   docker login -u $DOCKER_ID -p $DOCKER_PASS
 
-                  docker tag cast-service $DOCKER_ID/cast-service:$DOCKER_IMAGE_TAG
-                  docker tag movie-service $DOCKER_ID/movie-service:$DOCKER_IMAGE_TAG
+                  docker tag exam_jenkins_cast-service $DOCKER_ID/cast-service:$DOCKER_IMAGE_TAG
+                  docker tag exam_jenkins_movie-service $DOCKER_ID/movie-service:$DOCKER_IMAGE_TAG
 
                   docker push $DOCKER_ID/cast-service:$DOCKER_IMAGE_TAG
                   docker push $DOCKER_ID/movie-service:$DOCKER_IMAGE_TAG
