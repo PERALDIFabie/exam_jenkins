@@ -49,8 +49,15 @@ pipeline {
         }
 
         stage('Deploy to Dev (Auto)') {
+            environment {
+            KUBECONFIG = credentials("config") // we retrieve  kubeconfig from secret file called config saved on jenkins
+            }
             steps {
                 sh '''
+                  rm -Rf .kube
+                  mkdir .kube
+                  ls
+                  cat $KUBECONFIG > .kube/config
                   helm upgrade --install app-dev $HELM_CHART_PATH \
                   --namespace dev \
                   --create-namespace
