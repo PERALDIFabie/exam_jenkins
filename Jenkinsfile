@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_ID = 'dockerhub_user'
+        DOCKER_ID = 'peraldi'
         DOCKER_IMAGE_TAG = 'latest'
         DOCKER_COMPOSE_FILE = 'docker-compose.yml'
         HELM_CHART_PATH = 'charts'
