@@ -33,8 +33,8 @@ pipeline {
                 sh '''
                   docker login -u $DOCKER_ID -p $DOCKER_PASS
 
-                  docker tag exam_jenkins_cast-service $DOCKER_ID/cast-service:$DOCKER_IMAGE_TAG
-                  docker tag exam_jenkins_movie-service $DOCKER_ID/movie-service:$DOCKER_IMAGE_TAG
+                  docker tag exam_jenkins_cast_service $DOCKER_ID/cast-service:$DOCKER_IMAGE_TAG
+                  docker tag exam_jenkins_movie_service $DOCKER_ID/movie-service:$DOCKER_IMAGE_TAG
 
                   docker push $DOCKER_ID/cast-service:$DOCKER_IMAGE_TAG
                   docker push $DOCKER_ID/movie-service:$DOCKER_IMAGE_TAG
