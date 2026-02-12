@@ -4,12 +4,17 @@
 
 replicaCount: 3
 
-image:
-  repository: peraldi/datascientestapi # replace this yourdocker_hub_id/datascientestapi
-  # This sets the pull policy for images.
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+castService:
+  image:
+    repository: peraldi/cast-service
+    pullPolicy: IfNotPresent
+    tag: ""
+
+movieService:
+  image:
+    repository: peraldi/movie-service
+    pullPolicy: IfNotPresent
+    tag: ""
 
 imagePullSecrets: 
   - name: "regcred"
@@ -43,6 +48,7 @@ service:
   type: NodePort
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
   port: 80
+  targetPort: 8000
 
 ingress:
   enabled: false
