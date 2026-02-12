@@ -4,17 +4,10 @@
 
 replicaCount: 3
 
-castService:
-  image:
-    repository: peraldi/cast-service
-    pullPolicy: IfNotPresent
-    tag: ""
-
-movieService:
-  image:
-    repository: peraldi/movie-service
-    pullPolicy: IfNotPresent
-    tag: ""
+image:
+   repository: peraldi
+   pullPolicy: IfNotPresent
+   tag: ""
 
 imagePullSecrets: 
   - name: "regcred"
