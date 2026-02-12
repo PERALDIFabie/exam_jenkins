@@ -56,6 +56,9 @@ pipeline {
                   mkdir .kube
                   ls
                   cat $KUBECONFIG > .kube/config
+                  cp charts/values.yaml values.yml
+                  cat values.yml
+                  sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yml
                   helm upgrade --install app-dev charts \
                   --namespace dev \
                   --create-namespace
@@ -73,6 +76,9 @@ pipeline {
                   mkdir .kube
                   ls
                   cat $KUBECONFIG > .kube/config
+                  cp charts/values.yaml values.yml
+                  cat values.yml
+                  sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yml
                   helm upgrade --install app-qa charts \
                   --namespace qa \
                   --create-namespace
@@ -90,6 +96,9 @@ pipeline {
                   mkdir .kube
                   ls
                   cat $KUBECONFIG > .kube/config
+                  cp charts/values.yaml values.yml
+                  cat values.yml
+                  sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yml
                   helm upgrade --install app-staging charts \
                   --namespace staging \
                   --create-namespace
@@ -109,6 +118,9 @@ pipeline {
                       mkdir .kube
                       ls
                       cat $KUBECONFIG > .kube/config
+                      cp charts/values.yaml values.yml
+                      cat values.yml
+                      sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yml
                       helm upgrade --install app-prod charts \
                       --namespace prod \
                       --create-namespace
