@@ -3,23 +3,21 @@ pipeline {
 
     environment {
         DOCKER_ID = 'peraldi'
-        DOCKER_IMAGE_TAG = 'latest'
-        DOCKER_COMPOSE_FILE = 'docker-compose.yml'
-        HELM_CHART_PATH = 'charts'
+        DOCKER_TAG = "v.${BUILD_ID}.0"
     }
 
     stages {
 
         stage('Build Images (Docker Compose)') {
             steps {
-                sh 'docker-compose -f $DOCKER_COMPOSE_FILE build'
+                sh 'docker-compose -f docker-compose.yml build'
             }
         }
 
         stage('Run Stack (Tests)') {
             steps {
                 sh '''
-                  docker-compose -f $DOCKER_COMPOSE_FILE up -d
+                  docker-compose -f docker-compose.yml up -d
                   docker-compose ps
                 '''
             }
@@ -48,7 +46,7 @@ pipeline {
             }
         }
 
-        stage('Deploy to Dev (Auto)') {
+        stage('Deploiement en Dev') {
             environment {
             KUBECONFIG = credentials("config") // we retrieve  kubeconfig from secret file called config saved on jenkins
             }
@@ -58,39 +56,60 @@ pipeline {
                   mkdir .kube
                   ls
                   cat $KUBECONFIG > .kube/config
-                  helm upgrade --install app-dev $HELM_CHART_PATH \
+                  helm upgrade --install app-dev charts \
                   --namespace dev \
                   --create-namespace
                 '''
             }
         }
 
-        stage('Deploy to QA (Auto)') {
+        stage('Deploiement en QA') {
+            environment {
+            KUBECONFIG = credentials("config") // we retrieve  kubeconfig from secret file called config saved on jenkins
+            }
             steps {
                 sh '''
-                  helm upgrade --install app-qa $HELM_CHART_PATH \
+                  rm -Rf .kube
+                  mkdir .kube
+                  ls
+                  cat $KUBECONFIG > .kube/config
+                  helm upgrade --install app-qa charts \
                   --namespace qa \
                   --create-namespace
                 '''
             }
         }
 
-        stage('Deploy to Staging (Auto)') {
+        stage('Deploiement en Staging') {
+            environment {
+            KUBECONFIG = credentials("config") // we retrieve  kubeconfig from secret file called config saved on jenkins
+            }
             steps {
                 sh '''
-                  helm upgrade --install app-staging $HELM_CHART_PATH \
+                  rm -Rf .kube
+                  mkdir .kube
+                  ls
+                  cat $KUBECONFIG > .kube/config
+                  helm upgrade --install app-staging charts \
                   --namespace staging \
                   --create-namespace
                 '''
             }
         }
 
-        stage('Deploy to Production (Manual)') {
+        stage('Deploiement en Production') {
+            environment {
+            KUBECONFIG = credentials("config") // we retrieve  kubeconfig from secret file called config saved on jenkins
+            }
             steps {
                 timeout(time: 15, unit: 'MINUTES') {
                     input message: 'Do you want to deploy in production ?', ok: 'Yes'
                     sh '''
-                      helm upgrade --install app-prod $HELM_CHART_PATH \
+                      rm -Rf .kube
+                      mkdir .kube
+                      ls
+                      cat $KUBECONFIG > .kube/config
+                      helm upgrade --install app-prod charts \
                       --namespace prod \
                       --create-namespace
                     '''
