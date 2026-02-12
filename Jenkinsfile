@@ -111,7 +111,7 @@ pipeline {
             KUBECONFIG = credentials("config") // we retrieve  kubeconfig from secret file called config saved on jenkins
             }
             when {
-                expression { env.BRANCH_NAME == 'master' }
+                expression { env.GIT_BRANCH == 'origin/master' }
             }
             steps {
                 timeout(time: 15, unit: 'MINUTES') {
