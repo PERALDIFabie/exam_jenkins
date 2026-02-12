@@ -110,6 +110,9 @@ pipeline {
             environment {
             KUBECONFIG = credentials("config") // we retrieve  kubeconfig from secret file called config saved on jenkins
             }
+            when {
+                expression { env.BRANCH_NAME == 'master' }
+            }
             steps {
                 timeout(time: 15, unit: 'MINUTES') {
                     input message: 'Do you want to deploy in production ?', ok: 'Yes'
